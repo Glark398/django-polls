@@ -8,7 +8,8 @@ from polls.models import Question
 print()
 
 def index(request):
-    return HttpResponse("Olá... seja bem vindo a enquete")
+    # return HttpResponse("Olá... seja bem vindo a enquete")
+    return render(request, "home.html")
 
 
 def sobre(request):
