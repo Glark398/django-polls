@@ -9,7 +9,8 @@ print()
 
 def index(request):
     # return HttpResponse("Olá... seja bem vindo a enquete")
-    return render(request, "home.html")
+    context = {'título': 'Página principal'}
+    return render(request, "home.html", context)
 
 
 def sobre(request):
@@ -17,7 +18,7 @@ def sobre(request):
 
 def exibe_questao(request, question_id):
     questao = Question.objects.get(id=question_id)
-    return HttpResponse(question.question_text)
+    return HttpResponse(questao.question_text)
 
 def ultimas_perguntas(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
