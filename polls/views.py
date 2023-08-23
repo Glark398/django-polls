@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from polls.models import Question
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -24,3 +26,11 @@ def ultimas_perguntas(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/perguntas.html', context)
+
+
+class QuestionCreateView(CreateView):
+    model = Question
+    fields = ('question_text', 'pub_date')
+    sucesss_url: reverse_lazy('index')
+
+
