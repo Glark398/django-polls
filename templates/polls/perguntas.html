@@ -1,4 +1,4 @@
-{% extends '_layout1.html' %} <!-- herda tudo que já tem em _layout1.html -->
+<!-- herda tudo que já tem em _layout1.html -->
 {% block head_title %}
 Mega Enquetes
 {% endblock %}
@@ -11,3 +11,7 @@ Mega Enquetes
 </article>
 {% endfor %}
 {% endblock %} <!-- fecha o bloco content -->
+
+<a href="{% url 'poll_add' %}" class="btn btn-lg btn-primary font-weight-bold">
+    + Pergunta
+</a>
