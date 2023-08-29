@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 
 from polls.models import Question
 
+from django.views.generic.edit import CreateView, UpdateView
+
 # Create your views here.
 
 
@@ -31,6 +33,12 @@ def ultimas_perguntas(request):
 
 
 class QuestionCreateView(CreateView):
+    model = Question
+    template_name = 'polls/question_form.html'
+    fields = ('question_text', 'pub_date', )
+    success_url = reverse_lazy('polls_list')
+
+class QuestionUpdateView(UpdateView):
     model = Question
     template_name = 'polls/question_form.html'
     fields = ('question_text', 'pub_date', )
