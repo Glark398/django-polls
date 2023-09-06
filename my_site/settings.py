@@ -1,4 +1,5 @@
-import os # Acrescentar no topo do arquivo, na primeira linha
+import os # Acrescentar no topo do arquivo, na primeira linha.
+from django.contrib.messages import constants as messages
 """
 Django settings for my_site project.
 
@@ -137,3 +138,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Inclua no final do arquivo as duas configurações abaixo
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# define os nomes das classes CSS a utilizar
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

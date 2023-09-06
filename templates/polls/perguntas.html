@@ -5,9 +5,8 @@
 
 {% block content %} <!-- substitui o bloco content em _layout1.html -->
     <h1>Nossas últimas Enquetes</h1>
+    <a class="p-2 text-dark" href="{% url 'polls_all' %}">Exibir todas as Perguntas</a>
 {% for question in latest_question_list %}
-
-<a class="p-2 text-dark" href="{% url 'polls_all' %}">Perguntas</a>
 
 
 <article>
