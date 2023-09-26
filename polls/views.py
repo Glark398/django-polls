@@ -5,6 +5,9 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from polls.models import Question
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -21,6 +24,7 @@ def index(request):
     return render(request, "polls/home.html", context)
 
 
+@login_required
 def sobre(request):
     return HttpResponse("Este é um app de enquete!")
 
@@ -54,7 +58,7 @@ class QuestionUpdateView(UpdateView):
         context['form_title'] = 'Editando a pergunta'
         return context
 
-class QuestionDeleteView(DeleteView):
+class QuestionDeleteView(LoginRequiredMixin, DeleteView):
     model = Question
     template_name = 'polls/question_confirm_delete_form.html'
     success_url = reverse_lazy('polls_list')
