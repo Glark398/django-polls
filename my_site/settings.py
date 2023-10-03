@@ -154,3 +154,5 @@ STATIC_URL = 'polls/static/'
 
 LOGIN_REDIRECT_URL = '/admin'
 LOGOUT_REDIRECT_URL = '/admin'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
