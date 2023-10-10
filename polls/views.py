@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.forms.models import BaseModelForm
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from polls.models import Question
+from polls.models import Choice, Question
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -56,6 +57,11 @@ class QuestionUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(QuestionUpdateView, self).get_context_data(**kwargs)
         context['form_title'] = 'Editando a pergunta'
+
+        question_id = self.kwargs.get('pk')
+        choices = Choice.objects.filter(question__pk=question_id)
+        context['question_choices'] = choices
+
         return context
 
 class QuestionDeleteView(LoginRequiredMixin, DeleteView):
@@ -83,4 +89,65 @@ class QuestionListView(ListView):
 
 class SobreTemplateView(TemplateView):
     template_name = 'polls/sobre.html'
+
+class ChoiceCreateView(CreateView):
+    model = Choice
+    template_name = 'polls/choice_form.html'
+    fields = ('choice_text', )
+    success_url = 'Alternativa registrada com sucesso!'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        return super(ChoiceCreateView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+
+        context = super(ChoiceCreateView, self).get_context_data(**kwargs)
+        context['form_title'] = f'Alternativa para: {question.question_text}'
+
+        return context
+    
+    def form_valid(self, form):
+        form.instance.question = self.question
+        messages.success(self.request, self.success_message)
+        return super(ChoiceCreateView, self).form_valid(form)
+
+    def get_success_url(self, *args, **kwargs):
+        question_id = self.kwargs.get('pk')
+        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+
+class ChoiceUpdateView(UpdateView):
+    model = Choice
+    template_name = 'polls/choice_form.html'
+    fields = ('choice_text', )
+    success_url = 'Alternativa atualizada com sucesso!'
+
+    def get_context_data(self, **kwargs):
+        # question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
+        context = super(ChoiceUpdateView, self).get_context_data(**kwargs)
+        context['form_title'] = 'Editando alternativa'
+
+        return context
+    
+    def form_valid(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ChoiceUpdateView, self).form_valid(request, *args, **kwargs)
+
+    def get_success_url(self, *args, **kwargs):
+        question_id = self.object.question_id
+        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+
+class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
+    model = Choice
+    template_name = 'polls/choice_confirm_delete_form.html'
+    success_url = 'Alternativa excluida com sucesso!'
+
+    def form_valid(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(ChoiceDeleteView, self).form_valid(request, *args, **kwargs)
+
+    def get_success_url(self, *args, **kwargs):
+        question_id = self.object.question_id
+        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
 
