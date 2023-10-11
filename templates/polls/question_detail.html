@@ -7,10 +7,10 @@
 <div class="card-body">
 <p>
 {{ question.question_text }}
-<a href="{% url 'poll_edit' pk=question.id %}" class="link-secondary">
+<a href="{% url 'polls_edit' pk=question.id %}" class="link-secondary">
 Editar
 </a> &nbsp;
-<a href="{% url 'poll_delete' pk=question.id %}" class="link-secondary">
+<a href="{% url 'polls_delete' pk=question.id %}" class="link-secondary">
 Excluir
 </a>
 </p>

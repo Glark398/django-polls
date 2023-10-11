@@ -6,6 +6,7 @@
       <h5 class="card-title">Excluindo a Pergunta Nº {{ object.id }}</h5>
     </div>
     <div class="card-body">
+      
       <form method="post">
         {% csrf_token %}
         <h6>Você tem certeza que deseja excluir a pergunta abaixo ?</h6>
@@ -13,8 +14,9 @@
         <p>"{{ object.question_text }}"</p>
         <br />
         <button type="submit" class="btn btn-danger">Confirmar</button>
-        <a href="{% url 'polls_list' %}" class="link-secondary">Cancelar</a>
+        <a href="{% url 'polls_edit' pk=object.question.id %}" class="link-secondary">Cancelar</a>
       </form>
+    
     </div>
   </div>
 {% endblock %} <!-- fecha o bloco content -->

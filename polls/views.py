@@ -95,6 +95,7 @@ class ChoiceCreateView(CreateView):
     template_name = 'polls/choice_form.html'
     fields = ('choice_text', )
     success_url = 'Alternativa registrada com sucesso!'
+    success_message = 'Alternativa registrada com sucesso!'
 
     def dispatch(self, request, *args, **kwargs):
         self.question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
@@ -115,13 +116,14 @@ class ChoiceCreateView(CreateView):
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.kwargs.get('pk')
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        return reverse_lazy('polls_edit', kwargs={'pk': question_id})
 
 class ChoiceUpdateView(UpdateView):
     model = Choice
     template_name = 'polls/choice_form.html'
     fields = ('choice_text', )
     success_url = 'Alternativa atualizada com sucesso!'
+    success_message = 'Alternativa atualizada com sucesso!'
 
     def get_context_data(self, **kwargs):
         # question = get_object_or_404(Question, pk=self.kwargs.get('pk'))
@@ -136,12 +138,13 @@ class ChoiceUpdateView(UpdateView):
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.object.question_id
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        return reverse_lazy('polls_edit', kwargs={'pk': question_id})
 
 class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Choice
     template_name = 'polls/choice_confirm_delete_form.html'
     success_url = 'Alternativa excluida com sucesso!'
+    success_message = 'Alternativa excluida com sucesso!'
 
     def form_valid(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -149,5 +152,5 @@ class ChoiceDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self, *args, **kwargs):
         question_id = self.object.question_id
-        return reverse_lazy('poll_edit', kwargs={'pk': question_id})
+        return reverse_lazy('polls_edit', kwargs={'pk': question_id})
 
