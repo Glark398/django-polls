@@ -153,8 +153,8 @@ MESSAGE_TAGS = {
 
 STATIC_URL = 'polls/static/'
 
-LOGIN_REDIRECT_URL = '/admin'
-LOGOUT_REDIRECT_URL = '/admin'
+LOGIN_REDIRECT_URL = '/polls'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 

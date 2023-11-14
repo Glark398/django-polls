@@ -209,7 +209,7 @@ def results(request, question_id):
     for choice in question.choice_set.all():
         percentage = 0
         if choice.votes > 0 and total_votes > 0:
-            percentage = choices.votes / total_votes * 100
+            percentage = (choices.votes/total_votes)*100
 
         context['votes'].append(
             {
