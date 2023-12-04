@@ -8,11 +8,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.hashers import make_password  # para criptografar a senha
 from django.contrib import messages
+from djangp.views.generic import TemplateView
 
 from django.contrib.auth import get_user_model
 User = get_user_model()  # obtém o model padrão para usuários do Django
 
 from accounts.forms import AccountSignupForm # importa o form de registro
+from polls.models import QuestionUser
 
 class AccountCreateView(CreateView):
     model = User  # conecta o model a view
@@ -45,3 +47,14 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form): # executa quando os dados estiverem válidos
         messages.success(self.request, self.success_message)
         return super(AccountUpdateView, self).form_valid(form)
+
+
+class AccountTemplateView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/user_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(AccountTemplateView, self).get_context_data(**kwargs)
+        voted = QuestionUser.objects.filter(user=self.request.user)
+        context['questions_voted'] = voted
+    
+    return context
